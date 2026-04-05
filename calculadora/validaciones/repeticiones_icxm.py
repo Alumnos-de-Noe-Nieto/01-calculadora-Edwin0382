@@ -36,4 +36,12 @@ def validar_repeticiones_icxm(cadena: str) -> bool:
         >>> validar_repeticiones_icxm("MMMM")
         False
     """
-    raise NotImplementedError()
+    s = cadena.strip().upper()
+
+    patrones_malos = ["IIII", "XXXX", "CCCC", "MMMM"]
+
+    for malo in patrones_malos:
+        if malo in s:
+            return False
+
+    return True

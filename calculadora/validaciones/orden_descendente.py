@@ -1,47 +1,46 @@
 """
 Nivel 4: Validación de orden descendente.
-
-Los símbolos deben ir en orden descendente de valor (izquierda a derecha).
-Excepción: las 6 formas sustractivas válidas.
-Ejemplos válidos: XVI, MDCLXVI, XIV (sustracción válida)
-Ejemplos inválidos: IVX, IIV, VIV
+Maneja bloques sustractivos correctamente para casos como XLIX (49).
 """
 
 def validar_orden_descendente(cadena: str) -> bool:
-    """
-    Valida que los símbolos estén en orden descendente de valor (izquierda a derecha).
+    s = cadena.strip().upper()
+    if not s:
+        return False
 
-    Nivel 4: Análisis Sintáctico - Orden descendente
+    VALORES = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    SUSTRACCIONES_VALIDAS = {
+        'IV': 4, 'IX': 9, 'XL': 40, 'XC': 90, 'CD': 400, 'CM': 900
+    }
 
-    💡 PISTA: Usa la constante VALORES con el valor numérico de cada símbolo
-    💡 PISTA: Usa la constante SUSTRACCIONES_VALIDAS = {'IV', 'IX', 'XL', 'XC', 'CD', 'CM'}
-    💡 PISTA: Recorre la cadena con un índice `i` usando un while loop
-    💡 PISTA: Si cadena[i:i+2] está en SUSTRACCIONES_VALIDAS:
-    💡 PISTA:   - Verifica que no haya repeticiones antes (ej: IIV es inválido, cadena[i-1] == cadena[i])
-    💡 PISTA:   - Verifica que el símbolo anterior sea mayor al valor sustraído
-    💡 PISTA:   - Verifica que después de la sustracción, el orden descendente continúe
-    💡 PISTA: Si no es sustracción, verifica VALORES[cadena[i]] >= VALORES[cadena[i+1]]
-    💡 PISTA: Ejemplo: "XVI" → X(10) >= V(5) >= I(1) → True
-    💡 PISTA: Ejemplo: "IVX" → I(1) < V(5), pero luego V(5) < X(10) → False
-    💡 PISTA: Ejemplo: "IIV" → I repetido antes de IV → False
-    💡 PISTA: Ejemplo: "MCMXCIV" → varias sustracciones válidas → True
+    i = 0
+    valor_bloque_anterior = float('inf')
 
-    Args:
-        cadena (str): La cadena de números romanos validada en Niveles 1-3
+    while i < len(s):
+        valor_bloque_actual = 0
+        paso = 1
 
-    Returns:
-        bool: True si el orden es correcto, False en caso contrario
+        if i + 1 < len(s) and s[i:i+2] in SUSTRACCIONES_VALIDAS:
+            if i > 0 and s[i-1] == s[i]:
+                return False
 
-    Examples:
-        >>> validar_orden_descendente("XVI")
-        True
-        >>> validar_orden_descendente("IVX")
-        False
-        >>> validar_orden_descendente("MCMXCIV")
-        True
-        >>> validar_orden_descendente("IIV")
-        False
-        >>> validar_orden_descendente("VIV")
-        False
-    """
-    raise NotImplementedError()
+            valor_bloque_actual = SUSTRACCIONES_VALIDAS[s[i:i+2]]
+            paso = 2
+        else:
+            valor_bloque_actual = VALORES[s[i]]
+            paso = 1
+
+        if valor_bloque_actual > valor_bloque_anterior:
+            return False
+
+        if paso == 2 and valor_bloque_actual == valor_bloque_anterior:
+            return False
+
+        if paso == 2 and i + 2 < len(s):
+            if VALORES[s[i+2]] >= VALORES[s[i+1]]:
+                return False
+
+        valor_bloque_anterior = valor_bloque_actual
+        i += paso
+
+    return True

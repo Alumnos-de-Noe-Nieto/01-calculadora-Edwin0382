@@ -34,4 +34,16 @@ def validar_repeticiones_vld(cadena: str) -> bool:
         >>> validar_repeticiones_vld("DD")
         False
     """
-    raise NotImplementedError()
+    s = cadena.strip().upper()
+
+    if "VV" in s or "LL" in s or "DD" in s:
+        return False
+
+    veces_v = s.count('V')
+    veces_l = s.count('L')
+    veces_d = s.count('D')
+
+    if veces_v > 1 or veces_l > 1 or veces_d > 1:
+        return False
+
+    return True
