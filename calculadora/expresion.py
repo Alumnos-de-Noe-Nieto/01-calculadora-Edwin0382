@@ -1,6 +1,7 @@
-from calculadora.parser import evaluar_expresion
 from calculadora.conversor import romano_a_entero
 from calculadora.error import ExpresionInvalida
+from calculadora.parser import evaluar_expresion
+
 
 def evaluar(expresion: str) -> int:
     try:
@@ -10,7 +11,6 @@ def evaluar(expresion: str) -> int:
 
         if not tokens_limpios:
             raise ExpresionInvalida("La expresión está vacía.")
-
 
         token_inicial = tokens_limpios[0]
         if token_inicial.tipo != 'ROMANO':
@@ -41,5 +41,5 @@ def evaluar(expresion: str) -> int:
 
     except ExpresionInvalida as e:
         raise e
-    except Exception as e:
+    except ValueError as e:
         raise ExpresionInvalida(f"Error inesperado en la expresión: {str(e)}")

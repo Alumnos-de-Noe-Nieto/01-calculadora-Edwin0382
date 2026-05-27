@@ -6,6 +6,7 @@ Ejemplos válidos: V, L, D, MCMXCIV
 Ejemplos inválidos: VV, LL, DD
 """
 
+
 def validar_repeticiones_vld(cadena: str) -> bool:
     """
     Valida que los símbolos V, L y D no se repitan (máximo 1).
@@ -43,7 +44,4 @@ def validar_repeticiones_vld(cadena: str) -> bool:
     veces_l = s.count('L')
     veces_d = s.count('D')
 
-    if veces_v > 1 or veces_l > 1 or veces_d > 1:
-        return False
-
-    return True
+    return not (veces_v > 1 or veces_l > 1 or veces_d > 1)

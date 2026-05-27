@@ -6,6 +6,7 @@ Ejemplos válidos: III, XXX, CCC, MMM
 Ejemplos inválidos: IIII, XXXX, CCCC, MMMM
 """
 
+
 def validar_repeticiones_icxm(cadena: str) -> bool:
     """
     Valida que los símbolos I, X, C, M no se repitan más de 3 veces consecutivas.
@@ -40,8 +41,4 @@ def validar_repeticiones_icxm(cadena: str) -> bool:
 
     patrones_malos = ["IIII", "XXXX", "CCCC", "MMMM"]
 
-    for malo in patrones_malos:
-        if malo in s:
-            return False
-
-    return True
+    return all(malo not in s for malo in patrones_malos)

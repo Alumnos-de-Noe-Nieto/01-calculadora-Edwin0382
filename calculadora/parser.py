@@ -4,13 +4,16 @@ Este módulo contiene las funciones para parsear expresiones aritméticas con n�
 """
 
 from dataclasses import dataclass
+
 from calculadora.error import ExpresionInvalida
+
 
 @dataclass
 class Token:
     tipo: str
     valor: str
     posicion: int
+
 
 def evaluar_expresion(expresion: str) -> list[Token]:
     if not expresion or not expresion.strip():
@@ -23,8 +26,9 @@ def evaluar_expresion(expresion: str) -> list[Token]:
         return tokens
     except ExpresionInvalida:
         raise
-    except Exception:
+    except ValueError:
         raise ExpresionInvalida(f'La expresión "{expresion}" tiene una estructura inválida')
+
 
 def tokenizar_expresion(expresion: str) -> list[Token]:
     tokens = []
@@ -53,11 +57,13 @@ def tokenizar_expresion(expresion: str) -> list[Token]:
 
     return tokens
 
+
 def validar_estructura_tokens(tokens: list[Token]) -> bool:
     tokens_limpios = [t for t in tokens if t.tipo != 'ESPACIO']
 
-    if not tokens_limpios:
-        return True
+    # Una expresión matemática debe tener al menos 3 tokens (Romano, Operador, Romano)
+    if len(tokens_limpios) < 3:
+        return False
 
     if len(tokens_limpios) % 2 == 0:
         return False
