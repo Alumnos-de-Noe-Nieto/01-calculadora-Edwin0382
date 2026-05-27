@@ -20,27 +20,25 @@ def validar_restas(cadena: str) -> bool:
     💡 PISTA: Ejemplo: "IL" → I(1) < L(50) → par "IL" NO está en SUSTRACCIONES_VALIDAS → False
     💡 PISTA: Ejemplo: "XIV" → X >= I, luego I < V → par "IV" está en SUSTRACCIONES_VALIDAS → True
     💡 PISTA: Ejemplo: "IIX" → I repetido antes de IX → False
-
-    Args:
-        cadena (str): La cadena de números romanos validada en Niveles 1-4
-
-    Returns:
-        bool: True si todas las restas son válidas, False en caso contrario
-
-    Examples:
-        >>> validar_restas("IV")
-        True
-        >>> validar_restas("IX")
-        True
-        >>> validar_restas("IL")
-        False
-        >>> validar_restas("IC")
-        False
-        >>> validar_restas("XIV")
-        True
-        >>> validar_restas("IIX")
-        False
-        >>> validar_restas("MCMXCIV")
-        True
     """
-    raise NotImplementedError()
+    s = cadena.strip().upper()
+    if s == "":
+        return False
+
+    valores = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    sustracciones_validas = {'IV', 'IX', 'XL', 'XC', 'CD', 'CM'}
+
+    for i in range(len(s) - 1):
+        actual = s[i]
+        siguiente = s[i+1]
+
+        if valores[actual] < valores[siguiente]:
+            par = actual + siguiente
+
+            if par not in sustracciones_validas:
+                return False
+
+            if i > 0 and s[i-1] == actual:
+                return False
+
+    return True
